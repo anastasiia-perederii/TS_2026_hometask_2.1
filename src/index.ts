@@ -15,8 +15,8 @@ type Lecturer = {
 };
 
 class School {
-    _areas: Area[] = [];
-    _lecturers: Lecturer[] = [];
+    private _areas: Area[] = [];
+    private _lecturers: Lecturer[] = [];
 
     get areas(): Area[] {
         return this._areas;
@@ -39,17 +39,16 @@ class School {
     }
 
     removeLecturer(surname: string): void {
-        this._lecturers = this._lecturers.filter(l => l.surname !== surname);
+        this._lecturers = this._lecturers.filter(
+            lecturer => lecturer.surname !== surname
+        );
     }
 }
 
 class Area {
-    _levels: Level[] = [];
-    _name: string;
+    private _levels: Level[] = [];
 
-    constructor(name: string) {
-        this._name = name;
-    }
+    constructor(private _name: string) {}
 
     get name(): string {
         return this._name;
@@ -69,14 +68,12 @@ class Area {
 }
 
 class Level {
-    _groups: Group[] = [];
-    _name: string;
-    _description: string;
+    private _groups: Group[] = [];
 
-    constructor(name: string, description: string) {
-        this._name = name;
-        this._description = description;
-    }
+    constructor(
+        private _name: string,
+        private _description: string
+    ) {}
 
     get name(): string {
         return this._name;
@@ -100,23 +97,28 @@ class Level {
 }
 
 class Group {
-    _status: GroupStatus = GroupStatus.Pending;
-    _students: Student[] = [];
+    private _status: GroupStatus = GroupStatus.Pending;
+    private _students: Student[] = [];
 
-    name: string;
-    levelName: string;
+    constructor(
+        private _name: string,
+        private _level: Level
+    ) {}
 
-    constructor(name: string, levelName: string) {
-        this.name = name;
-        this.levelName = levelName;
+    get name(): string {
+        return this._name;
     }
 
-    get students(): Student[] {
-        return this._students;
+    get level(): Level {
+        return this._level;
     }
 
     get status(): GroupStatus {
         return this._status;
+    }
+
+    get students(): Student[] {
+        return this._students;
     }
 
     setStatus(status: GroupStatus): void {
@@ -141,24 +143,23 @@ class Group {
 }
 
 class Student {
-    _firstName: string;
-    _lastName: string;
-    _birthYear: number;
-    _grades: Record<string, number> = {};
-    _visits: boolean[] = [];
+    private _grades: Record<string, number> = {};
+    private _visits: boolean[] = [];
 
-    constructor(firstName: string, lastName: string, birthYear: number) {
-        this._firstName = firstName;
-        this._lastName = lastName;
-        this._birthYear = birthYear;
-    }
+    constructor(
+        private _firstName: string,
+        private _lastName: string,
+        private _birthYear: number
+    ) {}
 
     get fullName(): string {
         return `${this._lastName} ${this._firstName}`;
     }
 
     set fullName(value: string) {
-        [this._lastName, this._firstName] = value.split(' ');
+        const [lastName, firstName] = value.split(' ');
+        this._lastName = lastName;
+        this._firstName = firstName;
     }
 
     get age(): number {
