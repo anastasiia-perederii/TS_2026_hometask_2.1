@@ -4,6 +4,9 @@ enum GroupStatus {
     Finished = 'finished',
 }
 
+type AreaName = 'ux' | 'development' | 'qa';
+type LevelName = 'junior' | 'middle' | 'senior';
+
 type Lecturer = {
     name: string;
     surname: string;
@@ -30,7 +33,7 @@ class School {
         this._areas.push(area);
     }
 
-    removeArea(name: string): void {
+    removeArea(name: AreaName): void {
         this._areas = this._areas.filter(area => area.name !== name);
     }
 
@@ -48,9 +51,9 @@ class School {
 class Area {
     private _levels: Level[] = [];
 
-    constructor(private _name: string) {}
+    constructor(private _name: AreaName) {}
 
-    get name(): string {
+    get name(): AreaName {
         return this._name;
     }
 
@@ -62,7 +65,7 @@ class Area {
         this._levels.push(level);
     }
 
-    removeLevel(name: string): void {
+    removeLevel(name: LevelName): void {
         this._levels = this._levels.filter(level => level.name !== name);
     }
 }
@@ -71,11 +74,11 @@ class Level {
     private _groups: Group[] = [];
 
     constructor(
-        private _name: string,
+        private _name: LevelName,
         private _description: string
     ) {}
 
-    get name(): string {
+    get name(): LevelName {
         return this._name;
     }
 
@@ -91,8 +94,8 @@ class Level {
         this._groups.push(group);
     }
 
-    removeGroup(name: string): void {
-        this._groups = this._groups.filter(group => group.name !== name);
+    removeGroup(groupName: string): void {
+        this._groups = this._groups.filter(group => group.name !== groupName);
     }
 }
 
@@ -102,7 +105,8 @@ class Group {
 
     constructor(
         private _name: string,
-        private _level: Level
+        private _level: Level,
+        private _area: Area
     ) {}
 
     get name(): string {
@@ -111,6 +115,10 @@ class Group {
 
     get level(): Level {
         return this._level;
+    }
+
+    get area(): Area {
+        return this._area;
     }
 
     get status(): GroupStatus {
